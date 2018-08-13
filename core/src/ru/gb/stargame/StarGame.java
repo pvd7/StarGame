@@ -26,7 +26,7 @@ public class StarGame extends ApplicationAdapter {
 
         batch.begin();
         batch.draw(background, 0, 0);
-        batch.draw(img, 0, 0);
+        batch.draw(img, 300, 200);
         batch.end();
     }
 

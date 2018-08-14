@@ -5,18 +5,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 public class StarGame extends ApplicationAdapter {
 
     private SpriteBatch batch;
-    private Texture img;
+    private Texture ship;
     private Texture background;
+
+    Vector2 imgStartPos;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        img = new Texture("pepelaz.png");
         background = new Texture("midgard.png");
+
+        ship = new Texture("pepelaz.png");
+        imgStartPos = new Vector2((background.getWidth() - ship.getWidth()) / 2, (background.getHeight() - ship.getWidth()) / 2);
     }
 
     @Override
@@ -26,14 +31,14 @@ public class StarGame extends ApplicationAdapter {
 
         batch.begin();
         batch.draw(background, 0, 0);
-        batch.draw(img, 300, 200);
+        batch.draw(ship, imgStartPos.x, imgStartPos.y);
         batch.end();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
-        img.dispose();
+        ship.dispose();
     }
 
 }

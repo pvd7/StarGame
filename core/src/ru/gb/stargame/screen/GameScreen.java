@@ -66,13 +66,15 @@ public class GameScreen extends Base2DScreen {
         if (distShipAndTouchPos > 0) {
             // укоряемся первую половину пути, вторую половину пути оттормаживаемся
             speedShip += (distShipAndTouchPos > distShipAndTouchPosDiv2) ? accelerationShip : -accelerationShip;
-            posShip.add(directShip.x * speedShip, directShip.y * speedShip);
-            distShipAndTouchPos -= Math.abs(speedShip);
+            if (distShipAndTouchPos - Math.abs(speedShip) > 0) {
+                posShip.add(directShip.x * speedShip, directShip.y * speedShip);
+                distShipAndTouchPos -= Math.abs(speedShip);
+            } else {
+                speedShip = 0;
+            }
 
 //            System.out.println(speedShip);
 //            System.out.println(posShip);
-        } else {
-            speedShip = 0;
         }
     }
 
@@ -98,4 +100,10 @@ public class GameScreen extends Base2DScreen {
         return false;
     }
 
+    @Override
+    public boolean keyDown(int keycode) {
+        super.keyDown(keycode);
+
+        return false;
+    }
 }

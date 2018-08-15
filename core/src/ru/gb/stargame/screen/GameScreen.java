@@ -17,10 +17,11 @@ public class GameScreen extends Base2DScreen {
 
     // текущие координаты корабля
     private Vector2 posShip;
-    //
+    // скорость корабля
     private float speedShip;
-
+    // конечная точка
     private Vector2 touchPos;
+    // направление движения
     private Vector2 directShip;
     // расстояние между кораблем и конечной точкой
     private float distShipAndTouchPos;

@@ -15,14 +15,22 @@ public class GameScreen extends Base2DScreen {
     private Texture background;
     private Texture ship;
 
+    // текущие координаты корабля
     private Vector2 posShip;
-    private int speedShip;
+    //
+    private float speedShip;
 
     private Vector2 touchPos;
-    private Vector2 moveShip;
+    private Vector2 directShip;
+    // расстояние между кораблем и конечной точкой
     private float distShipAndTouchPos;
+    // половина пути изначального расстояния между кораблем и конечной точкой
+    private float distShipAndTouchPosDiv2;
+    // центр корабля
     private Vector2 centerShip;
-    private int accelerationShip = 3;
+    // ускорение корабля
+    private float accelerationShip;
+
 
     public GameScreen(Game game) {
         super(game);
@@ -38,9 +46,8 @@ public class GameScreen extends Base2DScreen {
         centerShip = new Vector2(ship.getWidth() / 2, ship.getHeight() / 2);
         posShip = new Vector2(background.getWidth() / 2, background.getHeight() / 2);
         touchPos = new Vector2(posShip);
-        moveShip = new Vector2(posShip);
-        speedShip = 3;
-
+        directShip = new Vector2(posShip);
+        accelerationShip = 0.03f;
         distShipAndTouchPos = 0;
     }
 
@@ -56,10 +63,15 @@ public class GameScreen extends Base2DScreen {
         batch.end();
 
         if (distShipAndTouchPos > 0) {
-            distShipAndTouchPos -= speedShip;
-            posShip.add(moveShip);
+            // укоряемся первую половину пути, вторую половину пути оттормаживаемся
+            speedShip += (distShipAndTouchPos > distShipAndTouchPosDiv2) ? accelerationShip : -accelerationShip;
+            posShip.add(directShip.x * speedShip, directShip.y * speedShip);
+            distShipAndTouchPos -= Math.abs(speedShip);
+
+//            System.out.println(speedShip);
+//            System.out.println(posShip);
         } else {
-            distShipAndTouchPos = 0;
+            speedShip = 0;
         }
     }
 
@@ -75,11 +87,12 @@ public class GameScreen extends Base2DScreen {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
         touchPos.set(screenX, Gdx.graphics.getHeight() - screenY);
-        moveShip.set(touchPos).sub(posShip);
-        distShipAndTouchPos = moveShip.len();
-        moveShip.nor().scl(speedShip);
+        directShip.set(touchPos).sub(posShip);
+        distShipAndTouchPos = directShip.len();
+        distShipAndTouchPosDiv2 = distShipAndTouchPos / 2;
+        directShip.nor();
 
-        System.out.println(moveShip);
+        System.out.println(directShip);
 
         return false;
     }

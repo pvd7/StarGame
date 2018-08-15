@@ -16,10 +16,13 @@ public class GameScreen extends Base2DScreen {
     private Texture ship;
 
     private Vector2 posShip;
-    private Vector2 speedShip;
+    private int speedShip;
 
     private Vector2 touchPos;
-    private Vector2 directionMove;
+    private Vector2 moveShip;
+    private float distShipAndTouchPos;
+    private Vector2 centerShip;
+    private int accelerationShip = 3;
 
     public GameScreen(Game game) {
         super(game);
@@ -32,11 +35,13 @@ public class GameScreen extends Base2DScreen {
         batch = new SpriteBatch();
         background = new Texture("midgard.png");
         ship = new Texture("pepelaz.png");
-        posShip = new Vector2((background.getWidth() - ship.getWidth()) / 2, (background.getHeight() - ship.getWidth()) / 2);
+        centerShip = new Vector2(ship.getWidth() / 2, ship.getHeight() / 2);
+        posShip = new Vector2(background.getWidth() / 2, background.getHeight() / 2);
+        touchPos = new Vector2(posShip);
+        moveShip = new Vector2(posShip);
+        speedShip = 3;
 
-        speedShip = new Vector2(3f, 5f);
-        touchPos = new Vector2();
-        directionMove = new Vector2();
+        distShipAndTouchPos = 0;
     }
 
     @Override
@@ -47,9 +52,15 @@ public class GameScreen extends Base2DScreen {
 
         batch.begin();
         batch.draw(background, 0, 0);
-        batch.draw(ship, posShip.x, posShip.y);
+        batch.draw(ship, posShip.x - centerShip.x, posShip.y - centerShip.y);
         batch.end();
-        posShip.add(speedShip);
+
+        if (distShipAndTouchPos > 0) {
+            distShipAndTouchPos -= speedShip;
+            posShip.add(moveShip);
+        } else {
+            distShipAndTouchPos = 0;
+        }
     }
 
     @Override
@@ -64,13 +75,12 @@ public class GameScreen extends Base2DScreen {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
         touchPos.set(screenX, Gdx.graphics.getHeight() - screenY);
-        System.out.println("touchPos.x = " + touchPos.x + " touchPos.y = " + touchPos.y);
-        return false;
-    }
+        moveShip.set(touchPos).sub(posShip);
+        distShipAndTouchPos = moveShip.len();
+        moveShip.nor().scl(speedShip);
 
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        super.touchUp(screenX, screenY, pointer, button);
+        System.out.println(moveShip);
+
         return false;
     }
 

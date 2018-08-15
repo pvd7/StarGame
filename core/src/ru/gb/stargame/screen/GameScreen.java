@@ -32,7 +32,6 @@ public class GameScreen extends Base2DScreen {
     // ускорение корабля
     private float accelerationShip;
 
-
     public GameScreen(Game game) {
         super(game);
     }
@@ -48,7 +47,7 @@ public class GameScreen extends Base2DScreen {
         posShip = new Vector2(background.getWidth() / 2, background.getHeight() / 2);
         touchPos = new Vector2(posShip);
         directShip = new Vector2(posShip);
-        accelerationShip = 0.03f;
+        accelerationShip = 0.5f;
         distShipAndTouchPos = 0;
     }
 
@@ -58,6 +57,7 @@ public class GameScreen extends Base2DScreen {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
         batch.begin();
         batch.draw(background, 0, 0);
         batch.draw(ship, posShip.x - centerShip.x, posShip.y - centerShip.y);
@@ -65,13 +65,10 @@ public class GameScreen extends Base2DScreen {
 
         if (distShipAndTouchPos > 0) {
             // укоряемся первую половину пути, вторую половину пути оттормаживаемся
-            speedShip += (distShipAndTouchPos > distShipAndTouchPosDiv2) ? accelerationShip : -accelerationShip;
-            if (distShipAndTouchPos - Math.abs(speedShip) > 0) {
-                posShip.add(directShip.x * speedShip, directShip.y * speedShip);
-                distShipAndTouchPos -= Math.abs(speedShip);
-            } else {
-                speedShip = 0;
-            }
+            speedShip = Math.abs(speedShip + ((distShipAndTouchPos > distShipAndTouchPosDiv2) ? accelerationShip : -accelerationShip));
+            if (distShipAndTouchPos - Math.abs(speedShip) <= 0) speedShip = distShipAndTouchPos;
+            posShip.add(directShip.x * speedShip, directShip.y * speedShip);
+            distShipAndTouchPos -= Math.abs(speedShip);
 
 //            System.out.println(speedShip);
 //            System.out.println(posShip);

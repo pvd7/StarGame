@@ -52,7 +52,7 @@ public class GameScreenLesson2 extends Base2DScreen {
         accelerationShip = 0.5f;
         distShipAndTouchPos = 0;
 
-//        Sprite
+//        MySprite
     }
 
     @Override

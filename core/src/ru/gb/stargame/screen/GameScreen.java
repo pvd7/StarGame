@@ -8,13 +8,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.gb.stargame.base.Base2DScreen;
-import ru.gb.stargame.base.Sprite;
-import ru.gb.stargame.math.Rect;
+import ru.gb.stargame.base.MySprite;
+import ru.gb.stargame.math.MyRect;
 
 public class GameScreen extends Base2DScreen {
 
     Texture img;
-    Sprite logo;
+    MySprite logo;
 
     public GameScreen(Game game) {
         super(game);
@@ -24,7 +24,7 @@ public class GameScreen extends Base2DScreen {
     public void show() {
         super.show();
         img = new Texture("badlogic.jpg");
-        logo = new Sprite(new TextureRegion(img));
+        logo = new MySprite(new TextureRegion(img));
         logo.setSize(1f, 1f);
     }
 
@@ -36,6 +36,7 @@ public class GameScreen extends Base2DScreen {
 
         batch.begin();
         logo.draw(batch);
+        logo.update(0.5f);
         batch.end();
     }
 
@@ -46,7 +47,7 @@ public class GameScreen extends Base2DScreen {
     }
 
     @Override
-    public void resize(Rect worldBounds) {
+    public void resize(MyRect worldBounds) {
         super.resize(worldBounds);
     }
 
@@ -59,4 +60,5 @@ public class GameScreen extends Base2DScreen {
     public boolean touchUp(Vector2 touch, int pointer) {
         return super.touchUp(touch, pointer);
     }
+
 }

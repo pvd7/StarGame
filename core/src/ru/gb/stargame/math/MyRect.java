@@ -5,21 +5,20 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Прямоугольник
  */
-public class Rect {
+public class MyRect {
 
     public final Vector2 pos = new Vector2(); // позиция по центру
     protected float halfWidth; // половина ширины
     protected float halfHeight; // половина высоты
 
-    public Rect() {
-
+    public MyRect() {
     }
 
-    public Rect(Rect from) {
+    public MyRect(MyRect from) {
         this(from.pos.x, from.pos.y, from.getHalfWidth(), from.getHalfHeight());
     }
 
-    public Rect(float x, float y, float halfWidth, float halfHeight) {
+    public MyRect(float x, float y, float halfWidth, float halfHeight) {
         pos.set(x, y);
         this.halfWidth = halfWidth;
         this.halfHeight = halfHeight;
@@ -57,7 +56,7 @@ public class Rect {
         return halfHeight * 2f;
     }
 
-    public void set(Rect from) {
+    public void set(MyRect from) {
         pos.set(from.pos);
         halfWidth = from.halfWidth;
         halfHeight = from.halfHeight;
@@ -96,7 +95,7 @@ public class Rect {
         return touch.x >= getLeft() && touch.x <= getRight() && touch.y >= getBottom() && touch.y <= getTop();
     }
 
-    public boolean isOutside(Rect other) {
+    public boolean isOutside(MyRect other) {
         return getLeft() > other.getRight() || getRight() < other.getLeft() || getBottom() > other.getTop() || getTop() < other.getBottom();
     }
 

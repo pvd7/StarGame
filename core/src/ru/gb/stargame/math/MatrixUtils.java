@@ -14,11 +14,12 @@ public class MatrixUtils {
 
     /**
      * Расчёт матрицы перехода 4x4
+     *
      * @param mat итоговая матрица преобразований
      * @param src исходный квадрат
      * @param dst итоговый квадрат
      */
-    public static void calcTransitionMatrix(Matrix4 mat, Rect src, Rect dst) {
+    public static void calcTransitionMatrix(Matrix4 mat, MyRect src, MyRect dst) {
         float scaleX = dst.getWidth() / src.getWidth();
         float scaleY = dst.getHeight() / src.getHeight();
         mat.idt().translate(dst.pos.x, dst.pos.y, 0f).scale(scaleX, scaleY, 1f).translate(-src.pos.x, -src.pos.y, 0f);
@@ -26,11 +27,12 @@ public class MatrixUtils {
 
     /**
      * Расчёт матрицы перехода 3x3
+     *
      * @param mat итоговая матрица преобразований
      * @param src исходный квадрат
      * @param dst итоговый квадрат
      */
-    public static void calcTransitionMatrix(Matrix3 mat, Rect src, Rect dst) {
+    public static void calcTransitionMatrix(Matrix3 mat, MyRect src, MyRect dst) {
         float scaleX = dst.getWidth() / src.getWidth();
         float scaleY = dst.getHeight() / src.getHeight();
         mat.idt().translate(dst.pos.x, dst.pos.y).scale(scaleX, scaleY).translate(-src.pos.x, -src.pos.y);

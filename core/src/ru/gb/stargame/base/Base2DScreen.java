@@ -8,22 +8,23 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
-
 import ru.gb.stargame.math.MatrixUtils;
-import ru.gb.stargame.math.Rect;
+import ru.gb.stargame.math.MyRect;
 
 /**
  * Базовый класс для всех экранов
  */
 
-public class Base2DScreen implements Screen, InputProcessor {
+public abstract class Base2DScreen implements Screen, InputProcessor {
+
+    public static final float QWE = 23f;
 
     protected SpriteBatch batch;
 
     protected Game game;
-    private Rect screenBounds; // границы области рисования в пикселях
-    private Rect worldBounds; // границы проекции мировых координат
-    private Rect glBounds; // дефолтные границы проекции мир - gl
+    private MyRect screenBounds; // границы области рисования в пикселях
+    private MyRect worldBounds; // границы проекции мировых координат
+    private MyRect glBounds; // дефолтные границы проекции мир - gl
 
     private Matrix4 worldToGl;
     private Matrix3 screenToWorld;
@@ -33,9 +34,9 @@ public class Base2DScreen implements Screen, InputProcessor {
     public Base2DScreen(Game game) {
         this.game = game;
         Gdx.input.setInputProcessor(this);
-        this.screenBounds = new Rect();
-        this.worldBounds = new Rect();
-        this.glBounds = new Rect(0, 0, 1f, 1f);
+        this.screenBounds = new MyRect();
+        this.worldBounds = new MyRect();
+        this.glBounds = new MyRect(0, 0, QWE, QWE);
         this.worldToGl = new Matrix4();
         this.screenToWorld = new Matrix3();
     }
@@ -43,9 +44,7 @@ public class Base2DScreen implements Screen, InputProcessor {
     @Override
     public void show() {
         System.out.println("show");
-        if (batch != null) {
-            throw new RuntimeException("Повторная установка screen без dispose");
-        }
+        if (batch != null) throw new RuntimeException("Повторная установка screen без dispose");
         this.batch = new SpriteBatch();
     }
 
@@ -62,16 +61,18 @@ public class Base2DScreen implements Screen, InputProcessor {
         screenBounds.setBottom(0);
 
         float aspect = width / (float) height;
-        worldBounds.setHeight(1f);
-        worldBounds.setWidth(1f * aspect);
+        worldBounds.setHeight(QWE);
+        worldBounds.setWidth(QWE * aspect);
         MatrixUtils.calcTransitionMatrix(worldToGl, worldBounds, glBounds);
         batch.setProjectionMatrix(worldToGl);
         MatrixUtils.calcTransitionMatrix(screenToWorld, screenBounds, worldBounds);
         resize(worldBounds);
+
+        System.out.println(screenToWorld);
+        System.out.println(worldToGl);
     }
 
-    public void resize(Rect worldBounds) {
-
+    public void resize(MyRect worldBounds) {
     }
 
     @Override
@@ -149,7 +150,6 @@ public class Base2DScreen implements Screen, InputProcessor {
     }
 
     public boolean touchDragged(Vector2 touch, int pointer) {
-
         return false;
     }
 

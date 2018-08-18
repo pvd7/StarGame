@@ -9,8 +9,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "StarGame";
-		config.height = 450;
-		config.width = 800;
+//		config.height = 1960;
+//		config.width = 1080;
 		new LwjglApplication(new Star2DGame(), config);
 	}
 

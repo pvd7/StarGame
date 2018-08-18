@@ -17,13 +17,13 @@ import ru.gb.stargame.math.MyRect;
 
 public abstract class Base2DScreen implements Screen, InputProcessor {
 
-    public static final float QWE = 23f;
+    public static final float GAME_SIZE = 1000f;
 
     protected SpriteBatch batch;
 
     protected Game game;
     private MyRect screenBounds; // границы области рисования в пикселях
-    private MyRect worldBounds; // границы проекции мировых координат
+    private MyRect gameBounds; // границы проекции мировых координат
     private MyRect glBounds; // дефолтные границы проекции мир - gl
 
     private Matrix4 worldToGl;
@@ -35,8 +35,8 @@ public abstract class Base2DScreen implements Screen, InputProcessor {
         this.game = game;
         Gdx.input.setInputProcessor(this);
         this.screenBounds = new MyRect();
-        this.worldBounds = new MyRect();
-        this.glBounds = new MyRect(0, 0, QWE, QWE);
+        this.gameBounds = new MyRect();
+        this.glBounds = new MyRect(0, 0, GAME_SIZE, GAME_SIZE);
         this.worldToGl = new Matrix4();
         this.screenToWorld = new Matrix3();
     }
@@ -61,12 +61,12 @@ public abstract class Base2DScreen implements Screen, InputProcessor {
         screenBounds.setBottom(0);
 
         float aspect = width / (float) height;
-        worldBounds.setHeight(QWE);
-        worldBounds.setWidth(QWE * aspect);
-        MatrixUtils.calcTransitionMatrix(worldToGl, worldBounds, glBounds);
+        gameBounds.setHeight(GAME_SIZE);
+        gameBounds.setWidth(GAME_SIZE * aspect);
+        MatrixUtils.calcTransitionMatrix(worldToGl, gameBounds, glBounds);
         batch.setProjectionMatrix(worldToGl);
-        MatrixUtils.calcTransitionMatrix(screenToWorld, screenBounds, worldBounds);
-        resize(worldBounds);
+        MatrixUtils.calcTransitionMatrix(screenToWorld, screenBounds, gameBounds);
+        resize(gameBounds);
 
         System.out.println(screenToWorld);
         System.out.println(worldToGl);

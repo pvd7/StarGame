@@ -9,15 +9,13 @@ import ru.geekbrains.stargame.math.Rect;
 
 public class Sprite extends Rect {
 
-    protected float angle;
-    protected float scale = 1f;
-    protected TextureRegion[] regions;
-    protected int frame;
+    private float angle;
+    float scale = 1f;
+    private TextureRegion[] regions;
+    private int frame;
 
     public Sprite(TextureRegion region) {
-        if (region == null) {
-            throw new RuntimeException("region == null");
-        }
+        if (region == null) throw new RuntimeException("region == null");
         regions = new TextureRegion[1];
         regions[0] = region;
     }

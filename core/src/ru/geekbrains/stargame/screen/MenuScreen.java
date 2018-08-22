@@ -11,9 +11,10 @@ import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.stargame.base.ActionListener;
 import ru.geekbrains.stargame.base.Base2DScreen;
 import ru.geekbrains.stargame.math.Rect;
-import ru.geekbrains.stargame.screen.menu.ButtomNewGame;
+import ru.geekbrains.stargame.screen.menu.ButtonNewGame;
 import ru.geekbrains.stargame.screen.menu.ButtonExit;
 import ru.geekbrains.stargame.screen.sprites.Background;
+import ru.geekbrains.stargame.screen.sprites.MainShip;
 import ru.geekbrains.stargame.screen.sprites.Star;
 
 /**
@@ -32,7 +33,7 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
     private TextureAtlas atlas;
     private Star star[];
     private ButtonExit buttonExit;
-    private ButtomNewGame buttomNewGame;
+    private ButtonNewGame buttonNewGame;
 
 
     public MenuScreen(Game game) {
@@ -51,8 +52,8 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
         }
         buttonExit = new ButtonExit(atlas, this, BUTTON_PRESS_SCALE);
         buttonExit.setHeightProportion(BUTTON_HEIGHT);
-        buttomNewGame = new ButtomNewGame(atlas, this, BUTTON_PRESS_SCALE);
-        buttomNewGame.setHeightProportion(BUTTON_HEIGHT);
+        buttonNewGame = new ButtonNewGame(atlas, this, BUTTON_PRESS_SCALE);
+        buttonNewGame.setHeightProportion(BUTTON_HEIGHT);
     }
 
     @Override
@@ -72,7 +73,7 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
             star[i].draw(batch);
         }
         buttonExit.draw(batch);
-        buttomNewGame.draw(batch);
+        buttonNewGame.draw(batch);
         batch.end();
     }
 
@@ -97,20 +98,20 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
             star[i].resize(worldBounds);
         }
         buttonExit.resize(worldBounds);
-        buttomNewGame.resize(worldBounds);
+        buttonNewGame.resize(worldBounds);
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
         buttonExit.touchDown(touch, pointer);
-        buttomNewGame.touchDown(touch, pointer);
+        buttonNewGame.touchDown(touch, pointer);
         return super.touchDown(touch, pointer);
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
         buttonExit.touchUp(touch, pointer);
-        buttomNewGame.touchUp(touch, pointer);
+        buttonNewGame.touchUp(touch, pointer);
         return super.touchUp(touch, pointer);
     }
 
@@ -118,7 +119,7 @@ public class MenuScreen extends Base2DScreen implements ActionListener {
     public void actionPerformed(Object src) {
         if (src == buttonExit) {
             Gdx.app.exit();
-        } else if (src == buttomNewGame) {
+        } else if (src == buttonNewGame) {
             game.setScreen(new GameScreen(game));
         }
     }

@@ -1,42 +1,61 @@
 package ru.geekbrains.stargame.screen.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import ru.geekbrains.stargame.base.Sprite;
 import ru.geekbrains.stargame.math.Rect;
+import ru.geekbrains.stargame.screen.pool.BulletPool;
 
-public class MainShip extends Sprite {
+public class MainShip extends Ship {
 
     private static final float SIZE = 0.15f;
-    private Vector2 speed;
-    private Rect worldBounds;
+    private static final float SPEED = 0.3f;
 
-    public MainShip(TextureAtlas atlas) {
-//        super(new TextureRegion(new TextureRegion(atlas.findRegion("main_ship"), 0, 0, 195, 287)));
+    private boolean pressedKeyLeft;
+    private boolean pressedKeyRight;
+
+    private int touchedLeft;
+    private int touchedRight;
+
+    Sound sound;
+    private int touched;
+
+    public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
         super(atlas.findRegion("main_ship"), 1, 2, 0);
         speed = new Vector2();
         setHeightProportion(SIZE);
+        this.bulletRegion = atlas.findRegion("bulletMainShip");
+        this.bulletHeight = 0.01f;
+        this.bulletV.set(0, 0.5f);
+        this.bulletDamage = 1;
+        this.bulletPool = bulletPool;
+        sound = Gdx.audio.newSound(Gdx.files.internal("music/Sound_16482.mp3"));
     }
 
     @Override
     public void resize(Rect worldBounds) {
         this.worldBounds = worldBounds;
         setBottom(worldBounds.getBottom());
-//        System.out.println("worldBounds.getBottom() " + worldBounds.getBottom());
-//        System.out.println("mainShip " + this);
     }
 
     @Override
     public void update(float delta) {
-//        if (worldBounds.isOutside(this)) stopMove();
-//        else pos.add(speed);
-        pos.add(speed);
+        pos.mulAdd(speed, delta);
+        if (getRight() > worldBounds.getRight()) {
+            setRight(worldBounds.getRight());
+            stopMove();
+        }
+        if (getLeft() < worldBounds.getLeft()) {
+            setLeft(worldBounds.getLeft());
+            stopMove();
+            ;
+        }
     }
 
     public void startMoveLeft() {
         startMove(-1);
-        speed.set(-0.005f, 0f);
     }
 
     public void startMoveRight() {
@@ -48,6 +67,67 @@ public class MainShip extends Sprite {
     }
 
     public void startMove(int direct) {
-        speed.set(0.005f * direct, 0f);
+        speed.set(SPEED * direct, 0f);
     }
+
+    public void keyDown(int keycode) {
+        switch (keycode) {
+            case Input.Keys.A:
+            case Input.Keys.LEFT:
+                pressedKeyLeft = true;
+                startMoveLeft();
+                break;
+            case Input.Keys.W:
+            case Input.Keys.RIGHT:
+                pressedKeyRight = true;
+                startMoveRight();
+                break;
+        }
+    }
+
+    public void keyUp(int keycode) {
+        switch (keycode) {
+            case Input.Keys.A:
+            case Input.Keys.LEFT:
+                pressedKeyLeft = false;
+                if (pressedKeyRight) startMoveRight();
+                break;
+            case Input.Keys.D:
+            case Input.Keys.RIGHT:
+                pressedKeyRight = false;
+                if (pressedKeyLeft) startMoveLeft();
+                break;
+            case Input.Keys.UP:
+            case Input.Keys.SPACE:
+                sound.play();
+                shoot();
+                break;
+
+        }
+        if (!pressedKeyLeft && !pressedKeyRight) stopMove();
+    }
+
+    public void touchDown(Vector2 touch, int pointer) {
+        touched++;
+        if (touch.x < worldBounds.pos.x) {
+            touchedLeft++;
+            startMoveLeft();
+        }
+        else {
+            touchedRight++;
+            startMoveRight();
+        }
+    }
+
+    public void touchUp(Vector2 touch, int pointer) {
+        touched--;
+        if (touched == 0) {
+            stopMove();
+        }
+    }
+
+    public void touchDragged(Vector2 touch, int pointer) {
+
+    }
+
 }

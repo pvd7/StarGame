@@ -11,8 +11,12 @@ public class Sprite extends Rect {
 
     private float angle;
     float scale = 1f;
-    private TextureRegion[] regions;
+    protected TextureRegion[] regions;
     private int frame;
+    protected boolean isDestroyed = false;
+
+    public Sprite() {
+    }
 
     public Sprite(TextureRegion region) {
         if (region == null) throw new RuntimeException("region == null");
@@ -50,14 +54,13 @@ public class Sprite extends Rect {
 
     }
 
-    public boolean touchDown(Vector2 touch, int pointer) {
-
-        return false;
-    }
-
-    public boolean touchUp(Vector2 touch, int pointer) {
-        return false;
-    }
+//    public boolean touchDown(Vector2 touch, int pointer) {
+//        return false;
+//    }
+//
+//    public boolean touchUp(Vector2 touch, int pointer) {
+//        return false;
+//    }
 
     public float getAngle() {
         return angle;
@@ -74,4 +77,17 @@ public class Sprite extends Rect {
     public void setScale(float scale) {
         this.scale = scale;
     }
+
+    public void destroy() {
+        this.isDestroyed = true;
+    }
+
+    public void flushDestroy() {
+        this.isDestroyed = false;
+    }
+
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
 }

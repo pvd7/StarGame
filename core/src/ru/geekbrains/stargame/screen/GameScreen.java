@@ -17,7 +17,7 @@ import ru.geekbrains.stargame.screen.sprites.Star;
 
 public class GameScreen extends Base2DScreen {
 
-    private static final int STAR_COUNT = 256;
+    private static final int STAR_COUNT = 56;
 
     private Background background;
     private Texture bgTexture;

@@ -20,6 +20,11 @@ public class Sprite extends Rect {
         regions[0] = region;
     }
 
+    public Sprite(TextureRegion region, int rows, int cols, int frames) {
+        if (region == null) throw new RuntimeException("region == null");
+        regions = region.split(region.getRegionWidth() / cols, region.getRegionHeight() / rows)[0];
+    }
+
     public void draw(SpriteBatch batch) {
         batch.draw(
                 regions[frame], // текущий регион

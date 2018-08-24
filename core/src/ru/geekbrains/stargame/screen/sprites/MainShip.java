@@ -3,7 +3,6 @@ package ru.geekbrains.stargame.screen.sprites;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-
 import ru.geekbrains.stargame.base.Sprite;
 import ru.geekbrains.stargame.math.Rect;
 
@@ -14,7 +13,8 @@ public class MainShip extends Sprite {
     private Rect worldBounds;
 
     public MainShip(TextureAtlas atlas) {
-        super(new TextureRegion(new TextureRegion(atlas.findRegion("main_ship"), 0, 0, 195, 287)));
+//        super(new TextureRegion(new TextureRegion(atlas.findRegion("main_ship"), 0, 0, 195, 287)));
+        super(atlas.findRegion("main_ship"), 1, 2, 0);
         speed = new Vector2();
         setHeightProportion(SIZE);
     }
